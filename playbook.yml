@@ -1,0 +1,18 @@
+---
+- name: Common setup.
+  hosts: elk
+  become: true
+
+  roles:
+    #- apt
+    #- ntp
+    - monit
+
+- name: Manage Monit service.
+
+- name: Haproxy LB setup.
+  hosts: haproxy
+  become: true
+
+  roles:
+    #- haproxy

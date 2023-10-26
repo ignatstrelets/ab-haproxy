@@ -1,0 +1,20 @@
+---
+- name: Install monit
+  apt:
+    name: monit
+    state: present
+
+
+- name: Replace default config to custom (system monitoring + gmail alerting).
+  copy:
+    src: files/monitrc
+    dest: /etc/monit/monitrc
+
+
+- name: Restart and enable monit.
+  service:
+    name: monit
+    state: restarted
+    enabled: yes
+
+

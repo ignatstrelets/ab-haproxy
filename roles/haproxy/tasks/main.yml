@@ -1,0 +1,12 @@
+---
+- name: Install haproxy.
+  apt:
+    name: ntp
+    state: present
+    update_cache: yes
+
+- name: Start and enable haproxy.
+  service:
+    name: ntp
+    state: started
+    enabled: yes
