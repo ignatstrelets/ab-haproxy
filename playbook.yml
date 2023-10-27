@@ -17,8 +17,8 @@
   roles:
     - haproxy
 
-- name: Logstash log server setup.
-  hosts: logstash
+#- name: Logstash log server setup.
+#  hosts: logstash
 
 
 
