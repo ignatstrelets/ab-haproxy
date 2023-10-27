@@ -1,5 +1,5 @@
 ---
-  - name: Update and upgrade apt packages.
+  - name: Update and upgrade installed apt packages.
     apt:
       upgrade: yes
       update_cache: yes

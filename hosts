@@ -1,4 +1,4 @@
 [elk]
 haproxy ansible_host=192.168.4.4 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/id_rsa
-#logstash ansible_host=192.168.4.5 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/id_rsa
+logstash ansible_host=192.168.4.5 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/id_rsa
 #webui ansible_host=192.168.4.6 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/id_rsa

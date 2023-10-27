@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.define "logstash" do |logstash|
     logstash.vm.provider :virtualbox do |v|
-      v.name = "abhaproxy"
+      v.name = "logstash"
       v.memory = "1024"
       v.cpus = "1"
     end

@@ -2,17 +2,23 @@
 - name: Common setup.
   hosts: elk
   become: true
-
   roles:
-    #- apt
-    #- ntp
+    - apt
+    - ntp
     - monit
-
-- name: Manage Monit service.
 
 - name: Haproxy LB setup.
   hosts: haproxy
   become: true
+  vars:
+    backend:
+      - { name: webui, ip: 192.168.4.6, port: 80}
 
   roles:
-    #- haproxy
+    - haproxy
+
+- name: Logstash log server setup.
+  hosts: logstash
+
+
+

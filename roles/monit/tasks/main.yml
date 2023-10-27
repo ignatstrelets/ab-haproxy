@@ -9,12 +9,10 @@
   copy:
     src: files/monitrc
     dest: /etc/monit/monitrc
+  notify:
+    - Restart monit
 
 
-- name: Restart and enable monit.
-  service:
-    name: monit
-    state: restarted
-    enabled: yes
+
 
 
