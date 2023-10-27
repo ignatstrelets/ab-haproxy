@@ -1,2 +1,34 @@
 ---
-- name:
+- name: Install dependencies.
+  apt:
+    name:
+      - apt-transport-https
+      - openssl
+      - wget
+    state: latest
+    update_cache: yes
+
+- name: Import ES GPG key.
+  shell: |
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+- name: Adding logstash repo to apt.
+  apt_repository:
+    repo: deb  https://artifacts.elastic.co/packages/8.x/apt  stable main
+    state: present
+
+- name: Update repositories cache and install logstash
+  apt:
+    name: logstash
+    update_cache: yes
+
+- name: Update the /etc/hosts file with node name
+  lineinfile:
+    dest: "/etc/hosts"
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{groups['elk']}}"
+
+

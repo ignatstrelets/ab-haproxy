@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
     haproxy.vm.hostname = "haproxy"
     haproxy.vm.network "private_network", ip: "192.168.4.4"
     haproxy.vm.network "forwarded_port", guest: 80, host: 8000
-    haproxy.vm.network "forwarded_port", guest: 2812, host: 28121
+    haproxy.vm.network "forwarded_port", guest: 2812, host: 2812
   end
   config.vm.define "logstash" do |logstash|
     logstash.vm.provider :virtualbox do |v|
@@ -23,6 +23,6 @@ Vagrant.configure("2") do |config|
     logstash.vm.hostname = "logstash"
     logstash.vm.network "private_network", ip: "192.168.4.5"
     logstash.vm.network "forwarded_port", guest: 80, host: 8001
-    logstash.vm.network "forwarded_port", guest: 2812, host: 28122
+    logstash.vm.network "forwarded_port", guest: 9200, host: 9200
   end
 end

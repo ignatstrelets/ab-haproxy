@@ -1,24 +1,35 @@
 ---
 - name: Common setup.
-  hosts: elk
+  hosts: all
   become: true
   roles:
-    - apt
-    - ntp
-    - monit
+#    - apt
+#    - ntp
+#    - monit
 
-- name: Haproxy LB setup.
-  hosts: haproxy
+#- name: Haproxy LB setup.
+#  hosts: haproxy
+#  become: true
+#  vars:
+#    backend:
+#      - { name: webui, ip: 192.168.4.6, port: 80}
+#
+#  roles:
+#    - haproxy
+
+- name: Logstash log server setup.
+  hosts: logstash
   become: true
   vars:
-    backend:
-      - { name: webui, ip: 192.168.4.6, port: 80}
-
+    elasticsearch_jvm_xms:
+      - 64m
+    elasticsearch_jvm_xmx:
+      - 256m
   roles:
-    - haproxy
+    #- java
+    #- logstash
+    - elasticsearch
 
-#- name: Logstash log server setup.
-#  hosts: logstash
 
 
 
