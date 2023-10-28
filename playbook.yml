@@ -3,7 +3,10 @@
   hosts: all
   become: true
   vars:
-    e
+    email_username:
+      -
+    email_password:
+      -
   roles:
     - apt
     - ntp
@@ -14,7 +17,7 @@
   become: true
   vars:
     backend:
-#TODO: add aws pucblic ip of webui
+ add aws pucblic ip of webui
       - { name: webui, ip: 192.168.4.6, port: 80}
 
   roles:
