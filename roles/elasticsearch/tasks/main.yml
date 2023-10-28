@@ -1,22 +1,20 @@
 ---
-#- name: Install elasticsearch.
-#  apt:
-#    name: elasticsearch
-#    state: present
-#    update_cache: yes
-#  notify:
-#    - Restart elasticsearch
-#
-#- name: Configure elasticsearch.yml File
-#  copy:
-#    src: '{{item.src}}'
-#    dest: /etc/elasticsearch/elasticsearch.yml
-#    owner: root
-#    group: elasticsearch
-#  with_items:
-#    - { src: 'files/elasticsearch.yml'}
-#
-- name: Set elasticsearch user to be owner of 'elasticsearch' dir.
+- name: Install elasticsearch.
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+  notify:
+    - Restart elasticsearch
+
+- name: Add custom 'elasticsearch.yml' file.
+  copy:
+    src: files/elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+
+- name: Set 'elasticsearch' user to be owner of 'elasticsearch' dir.
   file:
     path: /usr/share/elasticsearch
     state: directory
@@ -24,24 +22,24 @@
     owner: elasticsearch
     group: elasticsearch
 
-#- name: Set min JVM Heap size.
-#  lineinfile:
-#    dest: /etc/elasticsearch/jvm.options
-#    regexp: "^-Xms"
-#    line: "-Xms{{ elasticsearch_jvm_xms }}"
-#- name: Set max JVM Heap size.
-#  lineinfile:
-#    dest: /etc/elasticsearch/jvm.options
-#    regexp: "^-Xmx"
-#    line: "-Xmx{{ elasticsearch_jvm_xmx }}"
-#  notify:
-#    - Restart elasticsearch
+- name: Set min JVM heap size.
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "^-Xms"
+    line: "-Xms{{ elasticsearch_jvm_xms }}"
+- name: Set max JVM heap size.
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "^-Xmx"
+    line: "-Xmx{{ elasticsearch_jvm_xmx }}"
+  notify:
+    - Restart elasticsearch
 
-#- name: Add 'logstash_instance.ini' file.
-#  copy:
-#    dest: /etc/logstash_instance.ini
-#    content: |
-#      [general]
-#
-#- name: Add VM UUID to 'logstash_instance.ini' file.
-#  shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/logstash_instance.ini
+- name: Add 'logstash_instance.ini' file.
+  copy:
+    dest: /etc/logstash_instance.ini
+    content: |
+      [general]
+
+- name: Add VM UUID to 'logstash_instance.ini' file.
+  shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/logstash_instance.ini

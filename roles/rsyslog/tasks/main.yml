@@ -1,0 +1,23 @@
+---
+- name: Install software-properties-common to enable ppa and avoid recommended packages.
+  apt:
+    name: software-properties-common
+    state: latest
+    install_recommends: no
+
+- name: Add repo 'ppa:adiscon/v8-stable'.
+  apt_repository:
+    repo: ppa:adiscon/v8-stable
+
+- name: Install rsyslog.
+  apt:
+    name: rsyslog
+    state: present
+    update_cache: yes
+
+- name: Add custom 'rsyslog.conf' file.
+  copy:
+    src: files/rsyslog.conf
+    dest: /etc/rsyslog.conf
+  notify:
+    - Restart rsyslog

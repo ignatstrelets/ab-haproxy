@@ -25,4 +25,16 @@ Vagrant.configure("2") do |config|
     logstash.vm.network "forwarded_port", guest: 80, host: 8001
     logstash.vm.network "forwarded_port", guest: 9200, host: 9200
   end
+  config.vm.define "webui" do |webui|
+      webui.vm.provider :virtualbox do |v|
+        v.name = "webui"
+        v.memory = "1024"
+        v.cpus = "1"
+      end
+      webui.vm.hostname = "webui"
+      webui.vm.network "private_network", ip: "192.168.4.6"
+      webui.vm.network "forwarded_port", guest: 80, host: 8002
+      webui.vm.network "forwarded_port", guest: 5601, host: 5601
+      webui.vm.network "forwarded_port", guest: 514, host: 514
+    end
 end

@@ -1,0 +1,41 @@
+---
+#- name: Install dependencies.
+#  apt:
+#    name:
+#      - apt-transport-https
+#      - openssl
+#      - wget
+#    state: latest
+#    update_cache: yes
+#
+#- name: Import ES GPG key.
+#  shell: |
+#    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+#
+#- name: Add kibana repo to apt.
+#  apt_repository:
+#    repo: deb  https://artifacts.elastic.co/packages/8.x/apt  stable main
+#    state: present
+#    filename: kibana-8.x.list
+#
+#- name: Update apt cache and install kibana.
+#  apt:
+#    name: kibana
+#    state: present
+#    update_cache: yes
+
+#- name: Add custom 'kibana.yml' file.
+#  copy:
+#    src: /path/to/your/conf/kibana.yml
+#    dest: /etc/kibana/kibana.yml
+#  notify:
+#    - Restart kibana
+
+#- name: Add 'kibana_instance.ini' file.
+#  copy:
+#    dest: /etc/kibana_instance.ini
+#    content: |
+#      [general]
+#
+#- name: Add VM UUID to 'kibana_instance.ini' file.
+#  shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/kibana_instance.ini

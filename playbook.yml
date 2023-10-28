@@ -17,18 +17,25 @@
 #  roles:
 #    - haproxy
 
-- name: Logstash log server setup.
-  hosts: logstash
+#- name: Logstash log collecting server setup.
+#  hosts: logstash
+#  become: true
+#  vars:
+#    elasticsearch_jvm_xms:
+#      - 256m
+#    elasticsearch_jvm_xmx:
+#      - 256m
+#  roles:
+#    - java
+#    - logstash
+#    - elasticsearch
+
+- name: Kibana visualization server setup.
+  hosts: webui
   become: true
-  vars:
-    elasticsearch_jvm_xms:
-      - 64m
-    elasticsearch_jvm_xmx:
-      - 256m
   roles:
-    #- java
-    #- logstash
-    - elasticsearch
+    - rsyslog
+    #- kibana
 
 
 
