@@ -24,18 +24,9 @@
     state: present
     update_cache: yes
 
-- name: Add custom 'kibana.yml' file.
-  copy:
-    src:
-    dest: /etc/kibana/kibana.yml
-  notify:
-    - Restart kibana
-
-- name: Add elasticsearch ip to 'kibana.yml'.
-  lineinfile:
-    path: /etc/haproxy/haproxy.cfg
-    insertafter: 'balance roundrobin'
-    line: "        server {{ item.name }} {{ item.ip }}:{{ item.port }} check"
-  loop: "{{ backend }}"
+- name: Create custom 'kibana.yml' with elasticsearch ip.
+  template:
+    src: kibana.j2
+    dest: /etc/rsyslog.d/localsyslog.conf
   notify:
     - Restart kibana

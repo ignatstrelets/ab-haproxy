@@ -22,7 +22,7 @@
     name: logstash
     update_cache: yes
 
-- name: Update the '/etc/hosts' file with node name.
+- name: Update the '/etc/hosts' file with host name.
   lineinfile:
     dest: "/etc/hosts"
     regexp: '.*{{ item }}$'
@@ -30,5 +30,9 @@
     state: present
   when: hostvars[item].ansible_host is defined
   with_items: "{{groups['elk']}}"
+
+- name: Add custom input configuration.
+
+- name: Add custom output configuration.
 
 

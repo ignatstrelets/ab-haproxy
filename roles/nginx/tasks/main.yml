@@ -5,9 +5,9 @@
     state: latest
     update_cache: yes
 
-- name: Add reverse proxy configuration.
-  copy:
-    src: files/kibana-reverse-proxy.cfg
+- name: Create 'kibana-reverse-proxy.cfg' using custom template.
+  template:
+    src: kibana-reverse-proxy.j2
     dest: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
 
 - name: Link enabled configuration to 'kibana-reverse-proxy.cfg'.

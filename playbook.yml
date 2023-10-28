@@ -2,6 +2,8 @@
 - name: Common setup.
   hosts: all
   become: true
+  vars:
+    e
   roles:
     - apt
     - ntp
@@ -36,6 +38,9 @@
       - 256m
     elasticsearch_jvm_xmx:
       - 256m
+    logstash_ip:
+##TODO ddd logstash ip
+      -
   roles:
     - java
     - logstash
@@ -55,9 +60,12 @@
   hosts: webui
   become: true
   vars:
-    logstash_ip:
+    elasticsearch_ip:
 #TODO: add aws pucblic ip of logstash
-      - 192
+      -
+    kibana_ip:
+#TODO: add aws pucblic ip of webui
+      -
   roles:
     - rsyslog
     - kibana

@@ -4,10 +4,9 @@
     name: monit
     state: present
 
-
-- name: Replace default config to custom (system monitoring + gmail alerting).
-  copy:
-    src: files/monitrc
+- name: Create 'monitrc' using custom template.
+  template:
+    src: monitrc.j2
     dest: /etc/monit/monitrc
   notify:
     - Restart monit

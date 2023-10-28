@@ -31,7 +31,6 @@
     path: /etc/haproxy/haproxy.cfg
     insertafter: 'balance roundrobin'
     line: "        server {{ item.name }} {{ item.ip }}:{{ item.port }} check"
-  loop: "{{ backend }}"
   notify:
     - Restart haproxy
 

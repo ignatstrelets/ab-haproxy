@@ -27,6 +27,7 @@
     dest: /etc/elasticsearch/jvm.options
     regexp: "^-Xms"
     line: "-Xms{{ elasticsearch_jvm_xms }}"
+
 - name: Set max JVM heap size.
   lineinfile:
     dest: /etc/elasticsearch/jvm.options
