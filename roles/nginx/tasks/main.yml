@@ -3,5 +3,17 @@
   apt:
     name: nginx
     state: latest
+    update_cache: yes
+
+- name: Add reverse proxy configuration.
+  copy:
+    src: files/kibana-reverse-proxy.cfg
+    dest: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
+
+- name: Link enabled configuration to 'kibana-reverse-proxy.cfg'.
+  file:
+    src: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
+    dest: /etc/nginx/sites-enabled/default
+    state: link
   notify:
     - Restart nginx

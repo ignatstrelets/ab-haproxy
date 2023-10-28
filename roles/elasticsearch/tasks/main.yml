@@ -34,12 +34,3 @@
     line: "-Xmx{{ elasticsearch_jvm_xmx }}"
   notify:
     - Restart elasticsearch
-
-- name: Add 'logstash_instance.ini' file.
-  copy:
-    dest: /etc/logstash_instance.ini
-    content: |
-      [general]
-
-- name: Add VM UUID to 'logstash_instance.ini' file.
-  shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/logstash_instance.ini

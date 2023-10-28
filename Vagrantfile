@@ -22,7 +22,6 @@ Vagrant.configure("2") do |config|
     end
     logstash.vm.hostname = "logstash"
     logstash.vm.network "private_network", ip: "192.168.4.5"
-    logstash.vm.network "forwarded_port", guest: 80, host: 8001
     logstash.vm.network "forwarded_port", guest: 9200, host: 9200
   end
   config.vm.define "webui" do |webui|

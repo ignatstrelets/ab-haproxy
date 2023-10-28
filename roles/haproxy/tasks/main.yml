@@ -35,11 +35,3 @@
   notify:
     - Restart haproxy
 
-- name: Add 'haproxy.ini' file.
-  copy:
-    dest: /etc/haproxy_instance.ini
-    content: |
-      [general]
-
-- name: Add VM UUID to 'haproxy.ini' file.
-  shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/haproxy_instance.ini

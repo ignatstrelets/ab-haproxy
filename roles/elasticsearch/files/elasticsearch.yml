@@ -58,7 +58,7 @@ network.host: logstash
 # By default Elasticsearch listens for HTTP traffic on the first free port it
 # finds starting at 9200. Set a specific HTTP port here:
 #
-http.port: 2812
+http.port: 9200
 http.cors.enabled : true
 http.cors.allow-origin: "*"
 http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE

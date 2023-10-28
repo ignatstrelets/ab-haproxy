@@ -17,7 +17,7 @@
     repo: deb  https://artifacts.elastic.co/packages/8.x/apt  stable main
     state: present
 
-- name: Update apt cache and install logstash
+- name: Update apt cache and install logstash.
   apt:
     name: logstash
     update_cache: yes
