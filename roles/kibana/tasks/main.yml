@@ -27,6 +27,6 @@
 - name: Create custom 'kibana.yml' with elasticsearch ip.
   template:
     src: kibana.j2
-    dest: /etc/rsyslog.d/localsyslog.conf
+    dest: /etc/kibana/kibana.yml
   notify:
     - Restart kibana

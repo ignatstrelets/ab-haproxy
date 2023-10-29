@@ -5,15 +5,25 @@
     state: latest
     update_cache: yes
 
-- name: Create 'kibana-reverse-proxy.cfg' using custom template.
-  template:
-    src: kibana-reverse-proxy.j2
-    dest: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
+#- name: Create 'nginx.conf' using custom template to enable upstream proxy forwarding.
+#  template:
+#    src: nginx.j2
+#    dest: /etc/nginx/nginx.conf
 
-- name: Link enabled configuration to 'kibana-reverse-proxy.cfg'.
-  file:
-    src: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
-    dest: /etc/nginx/sites-enabled/default
-    state: link
+#- name: Add custom 'kibana-reverse-proxy.cfg' configuration.
+#  copy:
+#    src: kibana-reverse-proxy.cfg
+#    dest: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
+
+- name: Add custom 'kibana.conf' configuration.
+  copy:
+    src: kibana.conf
+    dest: /etc/nginx/conf.d/kibana.conf
   notify:
     - Restart nginx
+
+#- name: Link enabled configuration to 'kibana-reverse-proxy.cfg'.
+#  file:
+#    src: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
+#    dest: /etc/nginx/sites-enabled/default
+#    state: link

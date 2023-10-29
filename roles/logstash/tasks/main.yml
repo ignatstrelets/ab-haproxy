@@ -32,7 +32,14 @@
   with_items: "{{groups['elk']}}"
 
 - name: Add custom input configuration.
+  copy:
+    src: input.conf
+    dest: /etc/logstash/conf.d/input.conf
 
 - name: Add custom output configuration.
+  copy:
+    src: output.conf
+    dest: /etc/logstash/conf.d/output.conf
+
 
 

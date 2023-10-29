@@ -4,9 +4,7 @@
   become: true
   vars:
     email_username:
-      -
     email_password:
-      -
   roles:
     - apt
     - ntp
@@ -16,10 +14,8 @@
   hosts: haproxy
   become: true
   vars:
-    backend:
- add aws pucblic ip of webui
-      - { name: webui, ip: 192.168.4.6, port: 80}
-
+    backend_name: webui
+    backend_ip: 16.170.173.149
   roles:
     - haproxy
 
@@ -37,13 +33,9 @@
   hosts: logstash
   become: true
   vars:
-    elasticsearch_jvm_xms:
-      - 256m
-    elasticsearch_jvm_xmx:
-      - 256m
-    logstash_ip:
-##TODO ddd logstash ip
-      -
+    elasticsearch_jvm_xms: 256m
+    elasticsearch_jvm_xmx: 256m
+    logstash_ip: 51.20.55.6
   roles:
     - java
     - logstash
@@ -63,12 +55,8 @@
   hosts: webui
   become: true
   vars:
-    elasticsearch_ip:
-#TODO: add aws pucblic ip of logstash
-      -
-    kibana_ip:
-#TODO: add aws pucblic ip of webui
-      -
+    elasticsearch_logstash_ip: 51.20.55.6
+    kibana_ip: 16.170.173.149
   roles:
     - rsyslog
     - kibana

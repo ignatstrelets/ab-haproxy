@@ -30,7 +30,7 @@
   lineinfile:
     path: /etc/haproxy/haproxy.cfg
     insertafter: 'balance roundrobin'
-    line: "        server {{ item.name }} {{ item.ip }}:{{ item.port }} check"
+    line: '        server "{{ backend_name }}" "{{ backend_ip }}":80 check'
   notify:
     - Restart haproxy
 
