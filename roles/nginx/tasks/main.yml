@@ -27,3 +27,5 @@
 #    src: /etc/nginx/sites-available/kibana-reverse-proxy.cfg
 #    dest: /etc/nginx/sites-enabled/default
 #    state: link
+
+##TODO: remove default nginx config

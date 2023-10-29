@@ -36,6 +36,7 @@
     src: input.conf
     dest: /etc/logstash/conf.d/input.conf
 
+
 - name: Add custom output configuration.
   copy:
     src: output.conf

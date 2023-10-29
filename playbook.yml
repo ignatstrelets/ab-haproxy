@@ -57,6 +57,7 @@
   vars:
     elasticsearch_logstash_ip: 51.20.55.6
     kibana_ip: 16.170.173.149
+    kibana_password:
   roles:
     - rsyslog
     - kibana

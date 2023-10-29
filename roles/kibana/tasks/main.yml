@@ -24,7 +24,7 @@
     state: present
     update_cache: yes
 
-- name: Create custom 'kibana.yml' with elasticsearch ip.
+- name: Create custom 'kibana.yml' with provided password for 'kibana_system'.
   template:
     src: kibana.j2
     dest: /etc/kibana/kibana.yml
