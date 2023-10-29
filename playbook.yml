@@ -15,7 +15,7 @@
   become: true
   vars:
     backend_name: webui
-    backend_ip: 16.170.173.149
+    backend_ip:
   roles:
     - haproxy
 
@@ -35,7 +35,7 @@
   vars:
     elasticsearch_jvm_xms: 256m
     elasticsearch_jvm_xmx: 256m
-    logstash_ip: 51.20.55.6
+    logstash_ip:
   roles:
     - java
     - logstash
@@ -55,8 +55,8 @@
   hosts: webui
   become: true
   vars:
-    elasticsearch_logstash_ip: 51.20.55.6
-    kibana_ip: 16.170.173.149
+    elasticsearch_logstash_ip:
+    kibana_ip:
     kibana_password:
   roles:
     - rsyslog
