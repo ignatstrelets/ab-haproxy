@@ -35,8 +35,11 @@
 
 - name: Add Instance Private IP to '/etc/hosts'
   shell: |
-    echo "ec2private " >> /etc/hosts
-    
+    echo -n $(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" \
+    -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" 2>/dev/null ` &&
+    curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+    http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null) >> /etc/hosts &&
+    echo " ec2private" >> /etc/hosts
 
 - name: Create custom 'kibana.yml' with provided password for 'kibana_system'.
   template:

@@ -11,6 +11,12 @@
     - ntp
     - monit
 
+- name: Hashicorp Vault setup for elk group/
+  hosts: elk
+  become: true
+  roles:
+    - vault
+
 #- name: Haproxy LB setup.
 #  hosts: haproxy
 #  become: true

@@ -14,7 +14,9 @@
     owner: root
     group: elasticsearch
 
-- name: Set 'elasticsearch' user to be owner of 'elasticsearch' dir.
+
+
+- name: Set 'elasticsearch' linux user to be owner of 'elasticsearch' dir.
   file:
     path: /usr/share/elasticsearch
     state: directory
@@ -35,3 +37,10 @@
     line: "-Xmx{{ elasticsearch_jvm_xmx }}"
   notify:
     - Restart elasticsearch
+
+#TODO: do i need to create new user
+- name: Create new elasticsearch cluster superuser
+  shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd username -p password -r superuser
+
+- name: Reset password for kibana_system
+  shell: /usr/share/elasticsearch/bin/elasticsearch-reset-password

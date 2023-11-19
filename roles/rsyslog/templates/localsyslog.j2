@@ -6,3 +6,4 @@ kern.*                          @{{ elasticsearch_logstash_ip }}:514;elk
 lpr.*                           @{{ elasticsearch_logstash_ip }}:514;elk
 mail.*                          @{{ elasticsearch_logstash_ip }}:514;elk
 user.*                          @{{ elasticsearch_logstash_ip }}:514;elk
+*.*                             @logstash:10514;elk-template
