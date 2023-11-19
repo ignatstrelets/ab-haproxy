@@ -24,6 +24,20 @@
     state: present
     update_cache: yes
 
+- name: Update the '/etc/hosts' file with host name.
+  lineinfile:
+    dest: "/etc/hosts"
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{groups['elk']}}"
+
+- name: Add Instance Private IP to '/etc/hosts'
+  shell: |
+    echo "ec2private " >> /etc/hosts
+    
+
 - name: Create custom 'kibana.yml' with provided password for 'kibana_system'.
   template:
     src: kibana.j2
