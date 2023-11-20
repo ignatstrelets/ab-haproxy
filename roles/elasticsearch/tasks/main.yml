@@ -42,5 +42,10 @@
 - name: Create new elasticsearch cluster superuser
   shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd username -p password -r superuser
 
+- name: Set new passwo
+
 - name: Reset password for kibana_system
-  shell: /usr/share/elasticsearch/bin/elasticsearch-reset-password
+  shell: |
+    echo "y" | sudo ./elasticsearch-reset-password -u kibana_system -a -s 2>/dev/null
+
+#TODO: then put echo result into Vault
