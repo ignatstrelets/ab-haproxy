@@ -33,25 +33,28 @@
   when: hostvars[item].ansible_host is defined
   with_items: "{{groups['elk']}}"
 
+- name: Get Instance AWS Metadata token.
+  shell: |
+    echo `curl -X PUT "http://169.254.169.254/latest/api/token" \
+    -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" 2>/dev/null` \
+    > /tmp/token
+
 - name: Add Instance Private IP to '/etc/hosts'
   shell: |
-    echo -n $(TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" \
-    -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" 2>/dev/null ` &&
-    curl -H "X-aws-ec2-metadata-token: $TOKEN" \
-    http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null) >> /etc/hosts &&
-    echo " ec2private" >> /etc/hosts
+    echo -n $(curl -H "X-aws-ec2-metadata-token: $(cat /tmp/token)" \
+    http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null) \
+    >> /etc/hosts && echo " ec2private" >> /etc/hosts &&
+    rm /tmp/token
 
 - name: Add custom 'kibana.yml'.
   copy:
     src: kibana.yml
     dest: /etc/kibana/kibana.yml
 
-
 - name: Get password for 'kibana_system' from Vault, and write it into config.
   shell: |
-    KIBANA_PASSWORD=$(vault read -field=value kv/kibana_password)
-    KIBANA_PASSWORD_STRING="elasticsearch.password: \"${KIBANA_PASSWORD}\""
-    sed -i "46i$KIBANA_PASSWORD_STRING" /etc/kibana/kibana.yml
+    sed -i "46ielasticsearch.password: \"$(vault read -field=value kv/kibana_password)\"" \
+    /etc/kibana/kibana.yml
   environment:
     VAULT_ADDR: "{{ vault_addr }}"
     VAULT_TOKEN: "{{ vault_token }}"
