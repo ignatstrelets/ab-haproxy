@@ -44,7 +44,7 @@
 
 ################################################################################
 # Note: Elasticsearch can not create user with auto-generated password.
-#       Only able to replace old password with auto-generated one.
+#       Only able to replace old password with new auto-generated password.
 ################################################################################
 
 - name: Create elasticsearch cluster superuser for logstash.
@@ -52,17 +52,11 @@
     /usr/share/elasticsearch/bin/elasticsearch-users useradd logstash_internal \
     -p temporaryPassword -r superuser
 
-- name: Set new auto-generated password for 'logstash_internal' user.
+- name: Set new auto-generated password for 'logstash_internal' user and write it into config.
   shell: |
     LOGSTASH_PASSWORD=$(echo "y" |
     /usr/share/elasticsearch/bin/elasticsearch-reset-password \
-    -u logstash_internal -a -s 2>/dev/null)
-    echo $LOGSTASH_PASSWORD > /tmp/logstash_password
-
-- name: Write new 'logstash_internal' password to logstash output configuration.
-  shell: |
-    echo /tmp/logstash_password > LOGSTASH_PASSWORD &&
-    rm /tmp/logstash_password &&
+    -u logstash_internal -a -s 2>/dev/null) 
     LOGSTASH_PASSWORD_STRING="password => \"${LOGSTASH_PASSWORD}\"" &&
     sed -i "4i\\\t${LOGSTASH_PASSWORD_STRING}" /etc/logstash/conf.d/output.conf
   notify:
