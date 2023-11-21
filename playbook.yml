@@ -3,8 +3,8 @@
   hosts: all
   become: true
   vars:
-    admin_email_username:
-    admin_email_password:
+    admin_email_username: sample@mail.com
+    admin_email_password: samplePassword
   roles:
     - apt
     - ntp
