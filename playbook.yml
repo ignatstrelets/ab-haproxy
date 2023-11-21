@@ -36,12 +36,12 @@
   hosts: logstash
   become: true
   vars:
-    elasticsearch_jvm_xms: 256m
-    elasticsearch_jvm_xmx: 256m
+    elasticsearch_jvm_xms: 4g
+    elasticsearch_jvm_xmx: 4g
     elk_admin_username: sample
     elk_admin_password: samplePassword
-    logstash_jvm_xmx: 256m
-    logstash_jvm_xms: 256m
+    logstash_jvm_xmx: 4g
+    logstash_jvm_xms: 4g
   roles:
     - java
     - logstash
