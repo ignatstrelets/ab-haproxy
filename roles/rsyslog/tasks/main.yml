@@ -25,14 +25,14 @@
     src: 50-default.conf
     dest: /etc/rsyslog.d/50-default.conf
 
-- name: Add custom 'elk.conf' file.
+- name: Add custom '01-elk-template.conf' file.
   copy:
-    src: elk.conf
-    dest: /etc/rsyslog.d/elk.conf
+    src: 01-elk-template.conf
+    dest: /etc/rsyslog.d/01-elk-template.conf
 
-- name: Create 'localsyslog.conf' using custom template.
-  template:
-    src: localsyslog.j2
-    dest: /etc/rsyslog.d/localsyslog.conf
+- name: Add custom '60-output.conf' file.
+  copy:
+    src: 60-output.conf
+    dest: /etc/rsyslog.d/60-output.conf
   notify:
     - Restart rsyslog

@@ -14,6 +14,15 @@
     name: haproxy
     update_cache: yes
 
+- name: Update the '/etc/hosts' file with Public IP addresses of [elk] group.
+  lineinfile:
+    dest: "/etc/hosts"
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{groups['elk']}}"
+
 - name: Edit haproxy configuration file to enable 'roundrobin' LB strategy.
   blockinfile:
     path: /etc/haproxy/haproxy.cfg
@@ -25,12 +34,7 @@
 
       backend http_back
               balance roundrobin
+              server webui webui:80 check
 
-- name: Add backend hosts.
-  lineinfile:
-    path: /etc/haproxy/haproxy.cfg
-    insertafter: 'balance roundrobin'
-    line: '        server "{{ backend_name }}" "{{ backend_ip }}":80 check'
-  notify:
-    - Restart haproxy
+
 

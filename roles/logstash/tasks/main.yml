@@ -39,16 +39,34 @@
     http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null) >> /etc/hosts &&
     echo " ec2private" >> /etc/hosts
 
+- name: Add custom logstash configuration.
+  copy:
+    src: logstash.yml
+    dest: /etc/logstash/logstash.yml
+
 - name: Add custom input configuration.
   copy:
     src: input.conf
     dest: /etc/logstash/conf.d/input.conf
 
-
 - name: Add custom output configuration.
   copy:
     src: output.conf
     dest: /etc/logstash/conf.d/output.conf
+
+- name: Set min JVM heap size for logstash.
+  lineinfile:
+    dest: /etc/logstash/jvm.options
+    regexp: "^-Xms"
+    line: "-Xms{{ elasticsearch_jvm_xms }}"
+
+- name: Set max JVM heap size for logstash.
+  lineinfile:
+    dest: /etc/logstash/jvm.options
+    regexp: "^-Xmx"
+    line: "-Xmx{{ elasticsearch_jvm_xmx }}"
+  notify:
+    - Restart logstash
 
 
 

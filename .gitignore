@@ -2,3 +2,5 @@
 /provisioning/
 /notes
 /Vagrantfile
+/etc-backups/
+/deprecated_files/

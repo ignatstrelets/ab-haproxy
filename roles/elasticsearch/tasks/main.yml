@@ -24,13 +24,13 @@
     owner: elasticsearch
     group: elasticsearch
 
-- name: Set min JVM heap size.
+- name: Set min JVM heap size for elasticsearch.
   lineinfile:
     dest: /etc/elasticsearch/jvm.options
     regexp: "^-Xms"
     line: "-Xms{{ elasticsearch_jvm_xms }}"
 
-- name: Set max JVM heap size.
+- name: Set max JVM heap size for elasticsearch.
   lineinfile:
     dest: /etc/elasticsearch/jvm.options
     regexp: "^-Xmx"
@@ -39,13 +39,27 @@
     - Restart elasticsearch
 
 #TODO: do i need to create new user
-- name: Create new elasticsearch cluster superuser
-  shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd username -p password -r superuser
-
-- name: Set new passwo
-
-- name: Reset password for kibana_system
+- name: Create custom elasticsearch cluster superuser.
   shell: |
-    echo "y" | sudo ./elasticsearch-reset-password -u kibana_system -a -s 2>/dev/null
+    /usr/share/elasticsearch/bin/elasticsearch-users \
+    useradd username -p password -r superuser
+
+- name: Create elasticsearch cluster superuser for logstash.
+  shell: |
+    /usr/share/elasticsearch/bin/elasticsearch-users useradd logstash_internal \
+    -p temporaryPassword -r superuser
+
+- name: Set new auto-generated password for 'logstash_internal' user.
+  shell: |
+    export LOGSTASH_PASSWORD=$(echo "y" |
+    sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password \
+    -u logstash_internal -a -s 2>/dev/null)
+
+- name: Set new auto-generated password for 'kibana_system' user.
+  shell: |
+    export KIBANA_PASSWORD=$(echo "y" |
+    sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password \
+    -u kibana_system -a -s 2>/dev/null)
 
 #TODO: then put echo result into Vault
+
