@@ -1,9 +1,0 @@
-auth,authpriv.*                 @{{ elasticsearch_logstash_ip }}:514;elk
-*.*;auth,authpriv.none          @{{ elasticsearch_logstash_ip }}:514;elk
-cron.*                          @{{ elasticsearch_logstash_ip }}:514;elk
-daemon.*                        @{{ elasticsearch_logstash_ip }}:514;elk
-kern.*                          @{{ elasticsearch_logstash_ip }}:514;elk
-lpr.*                           @{{ elasticsearch_logstash_ip }}:514;elk
-mail.*                          @{{ elasticsearch_logstash_ip }}:514;elk
-user.*                          @{{ elasticsearch_logstash_ip }}:514;elk
-*.*                             @logstash:10514;elk-template
