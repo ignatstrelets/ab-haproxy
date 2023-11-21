@@ -9,12 +9,10 @@
 
 - name: Add custom 'elasticsearch.yml' file.
   copy:
-    src: files/elasticsearch.yml
+    src: elasticsearch.yml
     dest: /etc/elasticsearch/elasticsearch.yml
     owner: root
     group: elasticsearch
-
-
 
 - name: Set 'elasticsearch' linux user to be owner of 'elasticsearch' dir.
   file:
@@ -35,14 +33,19 @@
     dest: /etc/elasticsearch/jvm.options
     regexp: "^-Xmx"
     line: "-Xmx{{ elasticsearch_jvm_xmx }}"
-  notify:
-    - Restart elasticsearch
 
-#TODO: do i need to create new user
 - name: Create custom elasticsearch cluster superuser.
   shell: |
     /usr/share/elasticsearch/bin/elasticsearch-users \
-    useradd username -p password -r superuser
+    useradd $ELK_ADMIN_USERNAME -p $ELK_ADMIN_PASSWORD -r superuser
+  environment:
+    ELK_ADMIN_USERNAME: "{{ elk_admin_username }}"
+    ELK_ADMIN_PASSWORD: "{{ elk_admin_password }}"
+
+################################################################################
+# Note: Elasticsearch can not create user with auto-generated password.
+#       Only able to replace old password with auto-generated one.
+################################################################################
 
 - name: Create elasticsearch cluster superuser for logstash.
   shell: |
@@ -51,15 +54,33 @@
 
 - name: Set new auto-generated password for 'logstash_internal' user.
   shell: |
-    export LOGSTASH_PASSWORD=$(echo "y" |
-    sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password \
+    LOGSTASH_PASSWORD=$(echo "y" |
+    /usr/share/elasticsearch/bin/elasticsearch-reset-password \
     -u logstash_internal -a -s 2>/dev/null)
+    echo $LOGSTASH_PASSWORD > /tmp/logstash_password
 
-- name: Set new auto-generated password for 'kibana_system' user.
+- name: Write new 'logstash_internal' password to logstash output configuration.
   shell: |
-    export KIBANA_PASSWORD=$(echo "y" |
-    sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password \
-    -u kibana_system -a -s 2>/dev/null)
+    echo /tmp/logstash_password > LOGSTASH_PASSWORD &&
+    rm /tmp/logstash_password &&
+    LOGSTASH_PASSWORD_STRING="password => \"${LOGSTASH_PASSWORD}\"" &&
+    sed -i "4i\\\t${LOGSTASH_PASSWORD_STRING}" /etc/logstash/conf.d/output.conf
+  notify:
+    - Restart elasticsearch
+    - Restart logstash
 
-#TODO: then put echo result into Vault
+################################################################################
+# Note: Elasticsearch does not show existing user's password.
+#       Only able to reset it.
+################################################################################
+
+- name: Set new auto-generated password for 'kibana_system' and put into Vault.
+  shell: |
+    vault write kv/kibana_password value=$(echo "y" |
+    /usr/share/elasticsearch/bin/elasticsearch-reset-password \
+    -u kibana_system -a -s 2>/dev/null)
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
+    
 

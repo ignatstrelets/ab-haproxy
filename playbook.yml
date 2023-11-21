@@ -1,40 +1,36 @@
 ---
 - name: Common setup.
-  hosts: elk
-  #TODO: default to 'all'
+  hosts: all
   become: true
   vars:
-    email_username:
-    email_password:
+    admin_email_username:
+    admin_email_password:
   roles:
     - apt
     - ntp
     - monit
 
-- name: Hashicorp Vault setup for elk group/
+- name: Hashicorp Vault setup for elk group.
   hosts: elk
   become: true
   roles:
     - vault
 
-#- name: Haproxy LB setup.
-#  hosts: haproxy
-#  become: true
-#  vars:
-#    backend_name: webui
-#    backend_ip:
-#  roles:
-#    - haproxy
-#
-#  post_tasks:
-#    - name: Add 'haproxy_instance.ini' file.
-#      copy:
-#        dest: /etc/haproxy_instance.ini
-#        content: |
-#          [general]
-#
-#    - name: Add VM UUID to 'haproxy_instance.ini' file.
-#      shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/haproxy_instance.ini
+- name: Haproxy LB setup.
+  hosts: haproxy
+  become: true
+  roles:
+    - haproxy
+
+  post_tasks:
+    - name: Add 'haproxy_instance.ini' file.
+      copy:
+        dest: /etc/haproxy_instance.ini
+        content: |
+          [general]
+
+    - name: Add VM UUID to 'haproxy_instance.ini' file.
+      shell: echo "uniqueID="$(dmidecode -s system-uuid) >> /etc/haproxy_instance.ini
 
 - name: Logstash log collecting server setup.
   hosts: logstash
@@ -42,7 +38,10 @@
   vars:
     elasticsearch_jvm_xms: 256m
     elasticsearch_jvm_xmx: 256m
-    logstash_ip:
+    elk_admin_username: sample
+    elk_admin_password: samplePassword
+    logstash_jvm_xmx: 256m
+    logstash_jvm_xms: 256m
   roles:
     - java
     - logstash
@@ -61,10 +60,6 @@
 - name: Kibana visualization server setup.
   hosts: webui
   become: true
-  vars:
-    elasticsearch_logstash_ip:
-    kibana_ip:
-    kibana_password:
   roles:
     - rsyslog
     - kibana

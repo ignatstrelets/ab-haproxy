@@ -47,14 +47,13 @@
     dest: /etc/kibana/kibana.yml
 
 
-#TODO: get password for kibana_system from vault (env KIBANA_PASSWORD)
-
-- name: Create string with password for 'kibana_system'.
+- name: Get password for 'kibana_system' from Vault, and write it into config.
   shell: |
-    export KIBANA_PASSWORD_STRING="elasticsearch.password: \"${KIBANA_PASSWORD}\""
-
-- name: Write string with password to 'kibana.yml'.
-  shell: |
+    KIBANA_PASSWORD=$(vault read -field=value kv/kibana_password)
+    KIBANA_PASSWORD_STRING="elasticsearch.password: \"${KIBANA_PASSWORD}\""
     sed -i "46i$KIBANA_PASSWORD_STRING" /etc/kibana/kibana.yml
+  environment:
+    VAULT_ADDR: "{{ vault_addr }}"
+    VAULT_TOKEN: "{{ vault_token }}"
   notify:
     - Restart kibana

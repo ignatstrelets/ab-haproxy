@@ -1,4 +1,9 @@
 haproxy ansible_host=51.20.190.62 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/HSE-Web-Server-Key-Pair.pem
+
 [elk]
 logstash ansible_host=51.20.133.184 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/HSE-Web-Server-Key-Pair.pem
 webui ansible_host=16.171.242.82 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/motherwork/.ssh/HSE-Web-Server-Key-Pair.pem
+
+[elk:vars]
+vault_addr=http://172.31.18.130:8200
+vault_token=some.token
